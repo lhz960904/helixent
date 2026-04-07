@@ -75,7 +75,7 @@ export function ToolUseContentItem({ content }: { content: ToolUseContent }) {
     case "bash":
       return (
         <Box flexDirection="column">
-          <Text color={currentTheme.colors.secondaryText}>{content.input.description as string}</Text>
+          <Text>{content.input.description as string}</Text>
           <Text color={currentTheme.colors.secondaryText}>└─ {content.input.command as string}</Text>
         </Box>
       );
