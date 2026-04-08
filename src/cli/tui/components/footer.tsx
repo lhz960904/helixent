@@ -6,7 +6,7 @@ export function Footer() {
   const { agent } = useAgentLoop();
   return (
     <Box paddingLeft={2}>
-      <Text dimColor>{agent.model.name}</Text>
+      <Text color={currentTheme.colors.secondaryText}>{agent.model.name}</Text>
     </Box>
   );
 }

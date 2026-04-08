@@ -79,7 +79,7 @@ export function AssistantMessageItem({
           case "tool_use":
             return (
               <Box key={i} columnGap={1}>
-                <Text dimColor>⏺</Text>
+                <Text color={currentTheme.colors.dimText}>⏺</Text>
                 <Box flexDirection="column">
                   <ToolUseContentItem content={content} todos={todoSnapshots.get(snapshotKey(messageIndex, i))} />
                 </Box>
@@ -99,7 +99,7 @@ export function ToolUseContentItem({ content, todos }: { content: ToolUseContent
       return (
         <Box flexDirection="column">
           <Text>{content.input.description as string}</Text>
-          <Text dimColor>└─ {content.input.command as string}</Text>
+          <Text color={currentTheme.colors.dimText}>└─ {content.input.command as string}</Text>
         </Box>
       );
     case "str_replace":
@@ -108,7 +108,7 @@ export function ToolUseContentItem({ content, todos }: { content: ToolUseContent
       return (
         <Box flexDirection="column">
           <Text>{content.input.description as string}</Text>
-          <Text dimColor>└─ {content.input.path as string}</Text>
+          <Text color={currentTheme.colors.dimText}>└─ {content.input.path as string}</Text>
         </Box>
       );
     case "todo_write": {
@@ -123,7 +123,7 @@ export function ToolUseContentItem({ content, todos }: { content: ToolUseContent
         <Box flexDirection="column">
           <Text>{summaryTodo ? `Working on: ${summaryTodo.content}` : "Todo list complete"}</Text>
           {(completedCount > 0 || pendingCount > 0) && (
-            <Text dimColor>
+            <Text color={currentTheme.colors.dimText}>
               └─ {completedCount} completed{pendingCount > 0 ? `, ${pendingCount} pending` : ""}
             </Text>
           )}
@@ -134,7 +134,7 @@ export function ToolUseContentItem({ content, todos }: { content: ToolUseContent
       return (
         <Box flexDirection="column">
           <Text>Tool call</Text>
-          <Text dimColor>└─ {content.name}</Text>
+          <Text color={currentTheme.colors.dimText}>└─ {content.name}</Text>
         </Box>
       );
   }
@@ -158,9 +158,9 @@ export function ToolMessageItem({
     <Box flexDirection="column" width="100%">
       {visibleContent.map((content, i) => (
         <Box key={i} columnGap={1}>
-          <Text dimColor>✓</Text>
+          <Text color={currentTheme.colors.dimText}>✓</Text>
           <Box flexDirection="column">
-            <Text dimColor>{content.content}</Text>
+            <Text color={currentTheme.colors.dimText}>{content.content}</Text>
           </Box>
         </Box>
       ))}

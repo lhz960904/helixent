@@ -34,7 +34,7 @@ export function StreamingIndicator({ streaming, nextTodo }: { streaming: boolean
         </Text>
         <Text color={currentTheme.colors.primary}>{loadingMessage}</Text>
       </Box>
-      {nextTodo && <Text dimColor>Next: {nextTodo}</Text>}
+      {nextTodo && <Text color={currentTheme.colors.dimText}>Next: {nextTodo}</Text>}
     </Box>
   );
 }

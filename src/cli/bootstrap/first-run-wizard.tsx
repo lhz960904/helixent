@@ -3,6 +3,7 @@ import TextInput from "ink-text-input";
 import { useState } from "react";
 
 import type { HelixentConfig } from "@/cli/config";
+import { currentTheme } from "../tui/themes";
 
 type Step = "welcome" | "provider" | "apiKey" | "modelName" | "baseURL" | "confirm";
 
@@ -180,7 +181,7 @@ function FirstRunWizard({ onComplete, onAbort }: FirstRunWizardProps) {
           <Text>API Key: </Text>
           <TextInput mask="*" value={apiKey} onChange={setApiKey} onSubmit={() => setStep("modelName")} />
         </Box>
-        <Text dimColor>Press Enter to continue (Esc to cancel)</Text>
+        <Text color={currentTheme.colors.dimText}>Press Enter to continue (Esc to cancel)</Text>
       </Box>
     );
   }
@@ -198,7 +199,7 @@ function FirstRunWizard({ onComplete, onAbort }: FirstRunWizardProps) {
             onSubmit={goFromModelName}
           />
         </Box>
-        <Text dimColor>Press Enter to continue (Esc to cancel)</Text>
+        <Text color={currentTheme.colors.dimText}>Press Enter to continue (Esc to cancel)</Text>
       </Box>
     );
   }
@@ -223,7 +224,7 @@ function FirstRunWizard({ onComplete, onAbort }: FirstRunWizardProps) {
         <Text>Model: {cfg.name}</Text>
         <Text>baseURL: {cfg.baseURL}</Text>
         <Text>API Key: {maskSecurityString(cfg.APIKey)}</Text>
-        <Text dimColor>Enter to confirm (n 或 Esc 重来)</Text>
+        <Text color={currentTheme.colors.dimText}>Enter to confirm (n 或 Esc 重来)</Text>
       </Box>
     );
   }
@@ -239,7 +240,7 @@ function FirstRunWizard({ onComplete, onAbort }: FirstRunWizardProps) {
           onSubmit={() => finishWithBaseURL(customBaseURL)}
         />
       </Box>
-      <Text dimColor>Press Enter to finish (Esc to cancel)</Text>
+      <Text color={currentTheme.colors.dimText}>Press Enter to finish (Esc to cancel)</Text>
     </Box>
   );
 }
