@@ -2,6 +2,51 @@
 
 Helixent is a small library for building **ReAct-style** agent loops based on the **Bun** stack.
 
+## Quick Start (CLI mode)
+
+This section shows how to build Helixent from source and link the `helixent` CLI into your global PATH on **macOS**.
+
+### 1. Install dependencies
+
+```bash
+bun install
+```
+
+### 2. Build the binary
+
+```bash
+bun run build:bin
+```
+
+After the build completes, you should have:
+
+- `dist/bin/helixent`
+
+### 3. Symlink into your PATH (macOS)
+
+Pick the Homebrew prefix that matches your machine:
+
+- Apple Silicon (common): `/opt/homebrew/bin`
+- Intel (common): `/usr/local/bin`
+
+```bash
+# Apple Silicon (/opt/homebrew/bin)
+sudo ln -sf "$(pwd)/dist/bin/helixent" /opt/homebrew/bin/helixent
+
+# Intel (/usr/local/bin)
+sudo ln -sf "$(pwd)/dist/bin/helixent" /usr/local/bin/helixent
+```
+
+### 4. Run the CLI
+
+```bash
+helixent
+```
+
+Follow the prompts to complete the initial setup. Your config file will be automatically created at:
+
+- `~/.helixent/config.yaml`
+
 ## Architecture
 
 Helixent is organized into three layers, plus a `community` area for third-party integrations.
@@ -43,7 +88,7 @@ Optional, decoupled adapters that implement Foundation interfaces for specific p
 
 - `community/openai` — `OpenAIModelProvider` backed by the `openai` SDK, compatible with any OpenAI-compatible endpoint.
 
-## Quick Start: Build a Coding Agent from Scratch
+### How to build a coding agent from scratch
 
 Here's a complete example that creates a coding agent using an OpenAI-compatible provider:
 
@@ -86,8 +131,6 @@ for await (const message of stream) {
 }
 ```
 
-That's it — four steps to a working coding agent.
-
 ## Middleware
 
 Helixent provides a **middleware** system that lets you observe and mutate the agent's behavior at every stage of the loop. Middleware hooks are invoked sequentially in array order.
@@ -107,28 +150,6 @@ Helixent provides a **middleware** system that lets you observe and mutate the a
 
 Each hook receives the current context and can return a partial update to merge back in, or `void` to leave it unchanged.
 
-### Example: Skills Middleware
-
-The built-in **Skills Middleware** is a good example of how middleware works in practice. It does two things:
-
-1. **`beforeAgentRun`** — Scans skill directories for `SKILL.md` files, parses their frontmatter, and attaches the discovered skills to the agent context.
-2. **`beforeModel`** — Injects a `<skill_system>` block into the model prompt so the LLM knows which skills are available and can load them on demand.
-
-```ts
-import { createCodingAgent } from "helixent/coding";
-
-// Skills are loaded by default from ./skills/
-const agent = await createCodingAgent({ model });
-
-// Or specify custom directories
-const agent = await createCodingAgent({
-  model,
-  skillsDirs: ["./skills", "./shared-skills"],
-});
-```
-
-Skills are Markdown playbooks that live in folders under a skills directory. Each skill has a `SKILL.md` with YAML frontmatter (`name`, `description`) and the model loads the full content on demand via `read_file` when it matches a user's task.
-
 ## Why Bun?
 
 Agent loops are inherently asynchronous — the model thinks, tools execute, results stream back, often in parallel. JavaScript/TypeScript has **native async/await** baked into the language and runtime, making concurrent orchestration straightforward without the callback gymnastics or `asyncio` boilerplate you'd face in Python.
@@ -147,16 +168,3 @@ Among JS runtimes, we chose **Bun** specifically because:
 - **CLI** — A command-line interface layer for running Helixent agents directly from the terminal with interactive I/O.
 - **Print Mode** — A Claude Code-style rendering mode that streams the agent's thinking, tool calls, and outputs in a rich, human-friendly terminal UI.
 - **Sessioning** - A local file based session store for storing the agent's context and history.
-
-## Getting Started
-
-```bash
-# Install dependencies
-bun install
-
-# Run the example
-bun run index.ts
-
-# Type-check & lint
-bun run check
-```
