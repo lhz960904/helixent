@@ -15,11 +15,13 @@ https://github.com/user-attachments/assets/4ad89f14-e338-43e4-82ce-91cb83d58be2
 
 ## Index
 
+- [Install (npm / npx)](#install-npm--npx)
 - [Quick Start (CLI mode)](#quick-start-cli-mode)
   - [1. Install dependencies](#1-install-dependencies)
   - [2. Build the binary](#2-build-the-binary)
   - [3. Symlink into your PATH (macOS)](#3-symlink-into-your-path-macos)
   - [4. Run the CLI](#4-run-the-cli)
+- [How to configurate models](#how-to-configurate-models)
 - [Architecture](#architecture)
   - [Layer 1: Foundation](#layer-1-foundation)
   - [Layer 2: Agent Loop](#layer-2-agent-loop)
@@ -31,7 +33,27 @@ https://github.com/user-attachments/assets/4ad89f14-e338-43e4-82ce-91cb83d58be2
 - [Why Bun?](#why-bun)
 - [Roadmap](#roadmap)
 
-## Quick Start (CLI mode)
+## Install (npm / npx)
+
+You can install and run the latest `helixent` CLI without building from source:
+
+### Quick Start
+
+```bash
+npm install -g helixent@latest
+cd path/to/your/project
+helixent
+helixent --help
+```
+
+### Run via npx (no install)
+
+```bash
+cd path/to/your/project
+npx helixent@latest
+```
+
+## Quick Start - How to develop and build from source
 
 This section shows how to build Helixent from source and link the `helixent` CLI into your global PATH on **macOS**.
 
@@ -75,6 +97,36 @@ helixent
 Follow the prompts to complete the initial setup. Your config file will be automatically created at:
 
 - `~/.helixent/config.yaml`
+
+## How to configurate models
+
+Helixent stores your CLI configuration in:
+
+- `~/.helixent/config.yaml`
+
+### List configured models
+
+```bash
+helixent config model list
+```
+
+### Add a new model
+
+```bash
+helixent config model add
+```
+
+### Remove a model
+
+```bash
+helixent config model remove <model_name>
+```
+
+### Set the default model
+
+```bash
+helixent config model set-default <model_name>
+```
 
 ## Architecture
 
