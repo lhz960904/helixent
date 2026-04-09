@@ -2,6 +2,7 @@
 
 # Helixent
 
+[![npm](https://img.shields.io/npm/v/helixent?label=npm&logo=npm&color=CB3837)](https://www.npmjs.com/package/helixent)
 [![Bun](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=ffffff)](https://bun.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=ffffff)](https://www.typescriptlang.org)
 [![Ink](https://img.shields.io/badge/Ink-000000?logo=npm&logoColor=ffffff)](https://github.com/vadimdemedes/ink)
@@ -18,7 +19,7 @@ https://github.com/user-attachments/assets/4ad89f14-e338-43e4-82ce-91cb83d58be2
 - [Demo](#demo)
 - [Get Started](#get-started)
   - [Key Features](#key-features)
-  - [Install Globally and Run](#install-globally-and-run)
+  - [Install and Run](#install-globally-and-run)
   - [Run via npx Without Installing](#run-via-npx-without-installing)
 - [For Developers Who Want to Contribute to Helixent](#for-developers-who-want-to-contribute-to-helixent)
   - [Develop & Build from Source](#develop--build-from-source)
@@ -41,6 +42,8 @@ https://github.com/user-attachments/assets/4ad89f14-e338-43e4-82ce-91cb83d58be2
   - [Available Hooks](#available-hooks)
 - [Why Bun?](#why-bun)
 - [Roadmap](#roadmap)
+
+---
 
 ## Get Started
 
@@ -70,7 +73,11 @@ https://github.com/user-attachments/assets/4ad89f14-e338-43e4-82ce-91cb83d58be2
 - **CLI**
   - A CLI (with TUI support) for running agents interactively and iterating quickly.
 
-### Install Globally and Run
+---
+
+Helixent is now available on [`npm`](https://www.npmjs.com/package/helixent), so you can install globally and run, or choose to run via npx without installing:
+
+### Option 1: Install and Run
 
 ```bash
 npm install -g helixent@latest
@@ -79,11 +86,12 @@ helixent
 helixent --help
 ```
 
-### Run via npx Without Installing
+### Option 2: Run via npx Without Installing
 
 ```bash
 cd path/to/your/project
 npx helixent@latest
+npx helixent --help
 ```
 
 ---
