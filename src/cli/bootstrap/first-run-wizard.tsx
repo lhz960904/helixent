@@ -247,7 +247,7 @@ function FirstRunWizard({ onComplete, onAbort }: FirstRunWizardProps) {
 }
 
 export function runFirstRunWizard(): Promise<HelixentConfig> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const instance = render(
       <FirstRunWizard
         onComplete={(config) => {
@@ -256,7 +256,7 @@ export function runFirstRunWizard(): Promise<HelixentConfig> {
         }}
         onAbort={() => {
           instance.unmount();
-          reject(new Error("Bootstrap cancelled"));
+          process.exit(1);
         }}
       />,
     );
