@@ -1,6 +1,6 @@
 import { Box, Text } from "ink";
 
-import pkg from "../../../../package.json" with { type: "json" };
+import pkg from "../../../../package.json";
 import { useAgentLoop } from "../hooks/use-agent-loop";
 import { currentTheme } from "../themes";
 
