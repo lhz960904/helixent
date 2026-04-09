@@ -79,6 +79,7 @@ export function useAgentLoop() {
       if (streamingRef.current) return;
 
       if (text === "/clear") {
+        agent.clearMessages();
         flushPendingMessages();
         setMessages([]);
         clearTerminal();
