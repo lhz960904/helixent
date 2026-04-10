@@ -103,7 +103,9 @@ export function AgentLoopProvider({ agent, children }: { agent: Agent; children:
           if (event.type === "message") {
             enqueueMessage(event.message);
           }
-          // progress events: no-op for now; placeholder for a future live indicator
+          // progress events intentionally ignored: the UI shows a generic
+          // "Thinking..." shimmer driven by the `streaming` boolean, and
+          // MessageHistory is the single source of truth for tool calls.
         }
       } catch (error) {
         if (isAbortError(error)) return;
