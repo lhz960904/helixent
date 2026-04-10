@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-import type { Message, ModelProvider, TokenUsage, Tool } from "@/foundation";
+import type { AssistantMessage, ModelProvider, ModelProviderInvokeParams, TokenUsage } from "@/foundation";
 
+import { StreamAccumulator } from "./stream-utils";
 import {
   convertToAnthropicMessages,
   convertToAnthropicTools,
@@ -25,19 +26,32 @@ export class AnthropicModelProvider implements ModelProvider {
     });
   }
 
-  async invoke({
+  async invoke(params: ModelProviderInvokeParams) {
+    const response = await this._client.messages.create(this._baseMessageParams(params), {
+      signal: params.signal,
+    });
+    return parseAssistantMessage(response, toTokenUsage(response.usage));
+  }
+
+  async *stream(params: ModelProviderInvokeParams): AsyncGenerator<AssistantMessage> {
+    const response = await this._client.messages.create(
+      { ...this._baseMessageParams(params), stream: true },
+      { signal: params.signal },
+    );
+
+    const acc = new StreamAccumulator();
+    for await (const event of response) {
+      acc.push(event);
+      yield acc.snapshot();
+    }
+  }
+
+  private _baseMessageParams({
     model,
     messages,
     tools,
     options,
-    signal,
-  }: {
-    model: string;
-    messages: Message[];
-    tools?: Tool[];
-    options?: Record<string, unknown>;
-    signal?: AbortSignal;
-  }) {
+  }: ModelProviderInvokeParams): Anthropic.MessageCreateParamsNonStreaming {
     const system = extractSystemPrompt(messages);
     const anthropicMessages = convertToAnthropicMessages(messages);
     const anthropicTools = tools ? convertToAnthropicTools(tools) : undefined;
@@ -46,18 +60,14 @@ export class AnthropicModelProvider implements ModelProvider {
     // When thinking is enabled, Anthropic requires `budget_tokens`.
     // Default the budget to max_tokens minus a small buffer for the response.
     const normalizedOptions = { ...options };
-    const thinking = normalizedOptions.thinking as
-      | { type: string; budget_tokens?: number }
-      | undefined;
+    const thinking = normalizedOptions.thinking as { type: string; budget_tokens?: number } | undefined;
     if (thinking?.type === "enabled" && !thinking.budget_tokens) {
-      const maxTokens =
-        (normalizedOptions.max_tokens as number | undefined) ?? 8192;
+      const maxTokens = (normalizedOptions.max_tokens as number | undefined) ?? 8192;
       thinking.budget_tokens = Math.floor(maxTokens * 0.8);
       normalizedOptions.thinking = thinking;
     }
 
-    // Build the request parameters, merging caller-provided options.
-    const params: Anthropic.MessageCreateParamsNonStreaming = {
+    return {
       model,
       max_tokens: 8192,
       messages: anthropicMessages,
@@ -65,15 +75,10 @@ export class AnthropicModelProvider implements ModelProvider {
       ...(anthropicTools && anthropicTools.length > 0 ? { tools: anthropicTools } : {}),
       ...normalizedOptions,
     };
-
-    const response = await this._client.messages.create(params, { signal });
-    return parseAssistantMessage(response, toTokenUsage(response.usage));
   }
 }
 
-function toTokenUsage(
-  usage?: Anthropic.Usage,
-): TokenUsage | undefined {
+function toTokenUsage(usage?: Anthropic.Usage): TokenUsage | undefined {
   if (!usage) return undefined;
   return {
     promptTokens: usage.input_tokens ?? 0,
