@@ -3,11 +3,10 @@ import { join } from "node:path";
 import { Command } from "commander";
 import { render } from "ink";
 
-import { globalApprovalManager } from "@/agent/approval";
 import { validateIntegrity } from "@/cli/bootstrap";
 import { registerCommands } from "@/cli/commands";
 import { loadConfig } from "@/cli/config";
-import { createCodingAgent } from "@/coding";
+import { createCodingAgent, globalApprovalManager } from "@/coding";
 import { OpenAIModelProvider } from "@/community/openai";
 import { Model } from "@/foundation";
 
